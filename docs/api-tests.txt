@@ -1,0 +1,21 @@
+# new customer
+curl -X POST http://localhost:8080/customers \
+-H "Content-Type: application/json" \
+-d '{"name": "deneme1", "email": "dene@dene.co"}'
+
+# get customer
+curl http://localhost:8080/customers/1
+
+# update customer
+curl -X PUT http://localhost:8080/customers/1 \
+-H "Content-Type: application/json" \
+-d '{"email": "dene2@dene.co"}'
+
+# delete customer
+curl -X DELETE http://localhost:8080/customers/1
+
+# Türkçe bean validation hatası alma
+curl -vX PUT http://localhost:8080/customers/1 \
+-H "Content-Type: application/json" \
+-H "Accept-Language: tr-TR" \
+-d '{"email": "dene2"}' | jq
