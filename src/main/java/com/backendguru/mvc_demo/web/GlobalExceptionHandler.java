@@ -1,5 +1,6 @@
-package com.backendguru.mvc_demo.model.web;
+package com.backendguru.mvc_demo.web;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.MDC;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -19,6 +20,16 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleIllegalArgument(EntityNotFoundException e, HttpServletRequest request){
+
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problemDetail.setTitle("Resource not found");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setProperty("path", request.getRequestURI());
+        problemDetail.setProperty("traceId", MDC.get("traceId"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ProblemDetail> handleIllegalArgument(IllegalArgumentException e, HttpServletRequest request){

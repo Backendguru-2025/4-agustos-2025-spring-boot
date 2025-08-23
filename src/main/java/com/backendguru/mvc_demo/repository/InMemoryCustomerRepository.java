@@ -1,46 +1,47 @@
-package com.backendguru.mvc_demo;
+package com.backendguru.mvc_demo.repository;
 
 import com.backendguru.mvc_demo.model.domain.Customer;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
+//@Repository
 public class InMemoryCustomerRepository {
 
     private final Map<Long, Customer> db = new ConcurrentHashMap<>();
     private final AtomicLong seq = new AtomicLong(1);
 
-    Customer insert(String name, String email){
-        Customer customer = new Customer(seq.getAndIncrement(), name, email, LocalDateTime.now(), ZonedDateTime.now());
+    public Customer insert(String name, String email){
+        Customer customer = new Customer(seq.getAndIncrement(), name, email, LocalDateTime.now(), ZonedDateTime.now(), new ArrayList<>());
         db.put(customer.getId(), customer);
         return customer;
     }
 
-    Customer get(long id) {
+    public Customer get(long id) {
         return db.get(id);
     }
 
-    Customer update(long id, String email) {
+    public Customer update(long id, String email) {
         Customer customer = db.get(id);
         if(customer == null) {
             throw new IllegalArgumentException("Customer with id %d not found".formatted(id));
         }
-        customer = new Customer(customer.getId(), customer.getName(), email, customer.getCreatedAt(), ZonedDateTime.now());
+        customer = new Customer(customer.getId(), customer.getName(), email, customer.getCreatedAt(), ZonedDateTime.now(), new ArrayList<>());
         db.put(customer.getId(), customer);
         return customer;
     }
 
-    void delete(long id) {
+    public void delete(long id) {
         db.remove(id);
     }
 
-    List<Customer> list(int page, int size) {
+    public List<Customer> list(int page, int size) {
         return db.values().stream().skip(page * size).limit(size).toList();
     }
 
