@@ -1,15 +1,17 @@
-package com.backendguru.mvc_demo.model.web;
+package com.backendguru.mvc_demo.web;
 
 import com.backendguru.mvc_demo.CustomerService;
 import com.backendguru.mvc_demo.model.domain.Customer;
 import com.backendguru.mvc_demo.model.dto.CustomerDto;
 import com.backendguru.mvc_demo.model.dto.NewCustomerRequest;
+import com.backendguru.mvc_demo.model.dto.ReviewDto;
 import com.backendguru.mvc_demo.model.dto.UpdateCustomerRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -22,13 +24,14 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    CustomerDto getCustomer(@PathVariable long id, @RequestHeader int version){
+    CustomerDto getCustomer(@PathVariable long id, @RequestHeader(required = false) Integer version){
         Customer customer = customerService.read(id);
         return new CustomerDto(
                 customer.getName(),
                 customer.getEmail(),
                 customer.getCreatedAt(),
-                customer.getUpdatedAt());
+                customer.getUpdatedAt(),
+                Collections.emptyList());
     }
 
     @PostMapping
@@ -39,7 +42,9 @@ public class CustomerController {
                 customer.getName(),
                 customer.getEmail(),
                 customer.getCreatedAt(),
-                customer.getUpdatedAt());
+                customer.getUpdatedAt(),
+                Collections.emptyList());
+
     }
 
     @PutMapping("/{id}")
@@ -49,7 +54,9 @@ public class CustomerController {
                 updated.getName(),
                 updated.getEmail(),
                 updated.getCreatedAt(),
-                updated.getUpdatedAt());
+                updated.getUpdatedAt(),
+                Collections.emptyList());
+
     }
 
     @DeleteMapping("/{id}")
@@ -68,7 +75,14 @@ public class CustomerController {
                         c.getName(),
                         c.getEmail(),
                         c.getCreatedAt(),
-                        c.getUpdatedAt())).toList();
+                        c.getUpdatedAt(),
+                        c.getReviews().stream()
+                                .map(
+                                        review -> new ReviewDto(
+                                                review.getId(),
+                                                review.getComment())).toList()
+                        )
+                        ).toList();
     }
 
 }
