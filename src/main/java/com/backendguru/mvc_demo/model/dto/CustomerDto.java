@@ -12,6 +12,6 @@ public record CustomerDto(
         @JsonInclude(JsonInclude.Include.NON_NULL)
         String email,
         LocalDateTime createdAt,
-        ZonedDateTime updatedAt,
+        LocalDateTime updatedAt,
         List<ReviewDto> reviews) {
 }
