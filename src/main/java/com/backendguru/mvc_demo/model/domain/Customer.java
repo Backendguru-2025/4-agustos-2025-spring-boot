@@ -11,10 +11,10 @@ public class Customer {
     private final String name;
     private final String email;
     private LocalDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private LocalDateTime updatedAt;
     private List<Review> reviews;
 
-    public Customer(Long id, String name, String email, LocalDateTime createdAt, ZonedDateTime updatedAt, List<Review> reviews) {
+    public Customer(Long id, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt, List<Review> reviews) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -39,7 +39,7 @@ public class Customer {
         return createdAt;
     }
 
-    public ZonedDateTime getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 

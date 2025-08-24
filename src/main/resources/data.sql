@@ -1,8 +1,8 @@
 INSERT INTO CUSTOMERS
-("ID", "NAME", "EMAIL")
-VALUES (1, 'John', 'dad@adad.com'),
-       (2, 'Ali Veli', 'gfdfd@fdfdf.com'),
-       (3, 'deneme 3', 'adada@adad.com.tr');
+("NAME", "EMAIL")
+VALUES ('John', 'dad@adad.com'),
+       ('Ali Veli', 'gfdfd@fdfdf.com'),
+       ('deneme 3', 'adada@adad.com.tr');
 
 INSERT INTO REVIEWS
 ("ID", "CUSTOMER_ID", "COMMENT")

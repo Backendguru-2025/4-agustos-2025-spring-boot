@@ -2,6 +2,8 @@ package com.backendguru.mvc_demo.model.entity;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -9,9 +11,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "customers")
+@EntityListeners(AuditingEntityListener.class)
 public class CustomerEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Embedded
@@ -22,9 +25,30 @@ public class CustomerEntity {
     orphanRemoval = true)
     private List<ReviewEntity> reviews;
 
-    //@CreatedDate
-    //private LocalDateTime createdAt;
-    //private ZonedDateTime updatedAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        System.out.println("***************PrePersist called***************");
+    }
+
+    @PostPersist
+    public void postPersist() {
+        System.out.println("****************PostPersist called**************");
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        System.out.println("***************PreUpdate called***************");
+    }
+
+    @PostUpdate
+    public void postUpdate() {
+        System.out.println("****************PostUpdate called**************");
+    }
 
     public Long getId() {
         return id;

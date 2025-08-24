@@ -1,10 +1,8 @@
 package com.backendguru.mvc_demo.repository;
 
 import com.backendguru.mvc_demo.model.domain.Customer;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +16,7 @@ public class InMemoryCustomerRepository {
     private final AtomicLong seq = new AtomicLong(1);
 
     public Customer insert(String name, String email){
-        Customer customer = new Customer(seq.getAndIncrement(), name, email, LocalDateTime.now(), ZonedDateTime.now(), new ArrayList<>());
+        Customer customer = new Customer(seq.getAndIncrement(), name, email, LocalDateTime.now(), LocalDateTime.now(), new ArrayList<>());
         db.put(customer.getId(), customer);
         return customer;
     }
@@ -32,7 +30,7 @@ public class InMemoryCustomerRepository {
         if(customer == null) {
             throw new IllegalArgumentException("Customer with id %d not found".formatted(id));
         }
-        customer = new Customer(customer.getId(), customer.getName(), email, customer.getCreatedAt(), ZonedDateTime.now(), new ArrayList<>());
+        customer = new Customer(customer.getId(), customer.getName(), email, customer.getCreatedAt(), LocalDateTime.now(), new ArrayList<>());
         db.put(customer.getId(), customer);
         return customer;
     }
