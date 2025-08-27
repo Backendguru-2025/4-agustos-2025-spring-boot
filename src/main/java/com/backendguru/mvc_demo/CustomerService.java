@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.mapstruct.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class CustomerService {
         return  CUSTOMER_MAPPER.toDomain(customerEntity);
     }
 
+    @PreAuthorize("hasRole('DEVELOPER')")
     public Customer read(long id){
         CustomerEntity customerEntity = getCustomerEntity(id);
         return CUSTOMER_MAPPER.toDomain(customerEntity);
