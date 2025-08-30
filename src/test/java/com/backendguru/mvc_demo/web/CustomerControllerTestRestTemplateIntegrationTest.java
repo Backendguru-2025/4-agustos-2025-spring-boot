@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,14 +34,23 @@ class CustomerControllerTestRestTemplateIntegrationTest {
     @Test
     void shouldReturnProblemDetailForEntityNotFound() {
         String url = "http://localhost:" + port + "/customers/1000";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", "application/vnd.backendguru.v1+json");
+
         ResponseEntity<ProblemDetail> responseEntity = testRestTemplate
                 .withBasicAuth("user", "password")
-                .getForEntity(url, ProblemDetail.class);
-        assertThat(responseEntity.getStatusCode().isSameCodeAs(HttpStatusCode.valueOf(406))).isTrue();
-//        assertThat(responseEntity.getStatusCode().isSameCodeAs(HttpStatusCode.valueOf(404))).isTrue();
-//        assertThat(responseEntity.getBody().getTitle()).isEqualTo("Resource not found");
-//        assertThat(responseEntity.getBody().getDetail()).isEqualTo("Customer with id 1000 not found");
-//        assertThat(responseEntity.getBody().getStatus()).isEqualTo(HttpStatusCode.valueOf(404));
+                .exchange(
+                        url,
+                        HttpMethod.GET,
+                        new HttpEntity<>(headers),
+                        ProblemDetail.class
+                );
+
+        assertThat(responseEntity.getStatusCode().isSameCodeAs(HttpStatusCode.valueOf(404))).isTrue();
+        assertThat(responseEntity.getBody().getTitle()).isEqualTo("Resource not found");
+        assertThat(responseEntity.getBody().getDetail()).isEqualTo("Customer with id 1000 not found");
+        assertThat(responseEntity.getBody().getStatus()).isEqualTo(404);
     }
 
     @Test
