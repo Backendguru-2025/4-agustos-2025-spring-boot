@@ -28,6 +28,10 @@ class CustomerRepositoryPostgresIntegrationTest {
         registry.add("spring.datasource.url", PG::getJdbcUrl);
         registry.add("spring.datasource.username", PG::getUsername);
         registry.add("spring.datasource.password", PG::getPassword);
+        registry.add("spring.sql.init.platform", () -> "postgres");
+        registry.add("spring.sql.init.mode", () -> "always");
+        registry.add("spring.jpa.properties.hibernate.dialect", () -> "org.hibernate.dialect.PostgreSQLDialect");
+
     }
 
     @Autowired
@@ -41,13 +45,10 @@ class CustomerRepositoryPostgresIntegrationTest {
         profile.setEmail("deneme@deneme.com");
         newEntity.setProfile(profile);
         //WHEN
-        //customerRepository.save(newEntity);
-        assertThatThrownBy( () -> customerRepository.save(newEntity))
-                .isInstanceOf(InvalidDataAccessResourceUsageException.class)
-                        .hasMessageContaining("customers_seq");
+        customerRepository.save(newEntity);
         //THEN
-        //assertThat(customerRepository.count()).isEqualTo(4);
-        //assertThat(customerRepository.findById(newEntity.getId())).isPresent();
+        assertThat(customerRepository.count()).isEqualTo(4);
+        assertThat(customerRepository.findById(newEntity.getId())).isPresent();
     }
 
 
