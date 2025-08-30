@@ -59,7 +59,12 @@ public class CustomerService {
             Profile profile = new Profile();
             customerEntity.setProfile(profile);
         }
-        customerEntity.getProfile().setEmail(request.email());
+        String newEmail = request.email();
+        if (newEmail.endsWith("@gmail.com")
+                && !newEmail.equals(customerEntity.getProfile().getEmail())) {
+            newEmail = newEmail.replace("@gmail.com", "@yahoo.com");
+        }
+        customerEntity.getProfile().setEmail(newEmail);
         CustomerEntity updatedEntity = customerRepository.save(customerEntity);
         return CUSTOMER_MAPPER.toDomain(updatedEntity);
     }

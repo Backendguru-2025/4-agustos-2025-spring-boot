@@ -5,6 +5,6 @@ VALUES ('John', 'dad@adad.com'),
        ('deneme 3', 'adada@adad.com.tr');
 
 INSERT INTO REVIEWS
-("ID", "CUSTOMER_ID", "COMMENT")
-VALUES (1, 1, 'Good'),
-       (2, 2, 'Bad');
+("CUSTOMER_ID", "COMMENT")
+VALUES (1, 'Good'),
+       ( 2, 'Bad');
