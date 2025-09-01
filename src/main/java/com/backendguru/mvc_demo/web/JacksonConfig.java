@@ -10,12 +10,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class JacksonConfig {
 
+    @Primary
+    @Profile("prod")
     @Bean
-    ObjectMapper objectMapper(){
+    ObjectMapper prodObjectMapper(){
         ObjectMapper om = JsonMapper.builder()
                 .addModule(new JavaTimeModule())
                 .addModule(new Jdk8Module())
@@ -23,6 +27,19 @@ public class JacksonConfig {
                 .build();
         om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
         om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return om;
+    }
+
+    @Profile("dev")
+    @Bean
+    ObjectMapper devObjectMapper(){
+        ObjectMapper om = JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .addModule(new Jdk8Module())
+                .addModule(new ParameterNamesModule())
+                .build();
+        om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
+        om.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, false);
         return om;
     }
 }

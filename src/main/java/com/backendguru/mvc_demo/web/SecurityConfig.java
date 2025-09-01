@@ -17,6 +17,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(
                 a -> a
                         .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("h2-console/**").permitAll()
                         .anyRequest().authenticated()
             )
                 .httpBasic( b -> {})

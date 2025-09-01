@@ -19,13 +19,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CustomerServiceTest {
+class RealCustomerServiceTest {
 
     @Mock
     private CustomerRepository customerRepository;
 
     @InjectMocks
-    private CustomerService customerService;
+    private RealCustomerService customerService;
 
     @Test
     void updateEmailForNewNonGmailEmailAddressesForCurrentEmailFromGmail() {

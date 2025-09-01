@@ -7,6 +7,7 @@ import com.backendguru.mvc_demo.model.dto.NewCustomerRequest;
 import com.backendguru.mvc_demo.model.dto.ReviewDto;
 import com.backendguru.mvc_demo.model.dto.UpdateCustomerRequest;
 import jakarta.validation.Valid;
+import org.mapstruct.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService customerService;
-    CustomerController(CustomerService customerService) {
+    CustomerController( CustomerService customerService) {
         this.customerService = customerService;
     }
 
